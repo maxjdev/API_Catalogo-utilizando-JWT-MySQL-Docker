@@ -1,0 +1,58 @@
+networks:
+  db-network:
+    driver: bridge
+
+services:
+  db:
+    image: mysql
+    container_name: mysql
+    restart: always
+    environment:
+      - 'MYSQL_DATABASE=${MYSQL_DATABASE}'
+      - 'MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}'
+      - 'MYSQL_USER=${MYSQL_USER}'
+      - 'MYSQL_PASSWORD=${MYSQL_PASSWORD}'
+    ports:
+      - '${MYSQL_PORT}:${MYSQL_PORT}'
+    expose:
+      - '${MYSQL_PORT}'
+    networks:
+      - 'db-network'
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+#    volumes:
+#      - './mysql:/var/lib/mysql'
+
+  app:
+    depends_on:
+      db:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: catalog-app
+    ports:
+      - '${APP_PORT}:${APP_PORT}'
+    expose:
+      - '${APP_PORT}'
+    networks:
+      - 'db-network'
+    env_file:
+      - '.env'
+
+# Se necessário manipular o banco de dados
+#
+#  phpmyadmin:
+#    depends_on:
+#      - 'mysql'
+#    image: phpmyadmin/phpmyadmin
+#    restart: always
+#    ports:
+#      - '80:80'
+#    environment:
+#      - 'PMA_ARBITRARY=1'
+#    networks:
+#      - 'db-network'
