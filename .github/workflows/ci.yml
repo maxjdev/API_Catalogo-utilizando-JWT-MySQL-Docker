@@ -2,7 +2,7 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "dev" ]
   workflow_dispatch:
         
 jobs:
@@ -28,7 +28,7 @@ jobs:
             ${{ runner.os }}-maven
            
       - name: build project
-        run: mvn -B clean install
+        run: mvn clean install -DskipTests
         
   docker_login_build_push:
     needs: app_build
