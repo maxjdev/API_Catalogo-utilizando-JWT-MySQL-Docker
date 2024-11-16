@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: ["artifact"]
     types:
-      - success
+      - completed
 
 jobs:
   docker:
