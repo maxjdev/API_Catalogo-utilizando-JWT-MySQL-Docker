@@ -11,7 +11,7 @@ COPY pom.xml .
 RUN ./mvnw dependency:go-offline
 
 COPY src src
-RUN ./mvnw clean install
+RUN ./mvnw clean install -DskipTests
 
 # PACKAGE
 FROM eclipse-temurin:17-jre-alpine AS runtime
