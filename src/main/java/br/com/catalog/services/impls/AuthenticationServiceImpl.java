@@ -9,6 +9,7 @@ import br.com.catalog.services.IAuthenticationService;
 import br.com.catalog.services.impls.dtos.AuthenticationDTO;
 import br.com.catalog.services.impls.dtos.RegisterDTO;
 import br.com.catalog.services.impls.dtos.UserResponseDTO;
+import jakarta.transaction.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,6 +34,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService<Authent
         this.userToResponse = userToResponse;
     }
 
+    @Transactional
     @Override
     public String login(AuthenticationDTO dto){
         var usernamePassword = new UsernamePasswordAuthenticationToken(dto.login(), dto.password());
@@ -40,6 +42,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService<Authent
         return tokenService.generateToken((User) auth.getPrincipal());
     }
 
+    @Transactional
     @Override
     public UserResponseDTO register(RegisterDTO dto){
         if (userRepository.existsByLogin(dto.login()))
