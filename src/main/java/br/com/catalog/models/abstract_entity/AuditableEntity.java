@@ -35,19 +35,16 @@ public abstract class AuditableEntity {
 
     public void activate() {
         this.status = Status.ACTIVE;
-        this.updatedAt = LocalDateTime.now();
         onStatusChange(Status.ACTIVE);
     }
 
     public void disable() {
         this.status = Status.INACTIVE;
-        this.updatedAt = LocalDateTime.now();
         onStatusChange(Status.INACTIVE);
     }
 
     public void delete() {
         this.status = Status.DELETED;
-        this.updatedAt = LocalDateTime.now();
         onStatusChange(Status.DELETED);
     }
 
