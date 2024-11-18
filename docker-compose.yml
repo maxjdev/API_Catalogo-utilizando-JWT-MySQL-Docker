@@ -47,7 +47,7 @@ services:
 #
 #  phpmyadmin:
 #    depends_on:
-#      - 'mysql'
+#      - 'db'
 #    image: phpmyadmin/phpmyadmin
 #    restart: always
 #    ports:
